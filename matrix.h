@@ -5,7 +5,7 @@
 #include <tuple>
 #include <fstream>
 #include <iostream>
-#include <algorithm>
+#include <exception>
 
 class Matrix {
 	private:
@@ -26,11 +26,18 @@ class Matrix {
 
 		// Setters and getters
 		double& operator[](std::size_t x, std::size_t y) { // Set value to(i, j) < row, column >
+			if (x>=n | y >= m) {
+				throw new std::range_error("Index out of bounds");
+			}
+
 			return mat.get()[x * m + y];
 		}
 
 
-		const double& operator[](std::size_t x, std::size_t y) const { // Get value from(i, j) < row, column >
+		double operator[](std::size_t x, std::size_t y) const { // Get value from(i, j) < row, column >
+			if (x>=n | y >= m) {
+				throw new std::range_error("Index out of bounds");
+			}
 			return mat.get()[x * m + y];
 		}
 

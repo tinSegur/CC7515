@@ -44,6 +44,7 @@ Matrix::Matrix(const Matrix& matrix) {
 
 Matrix::~Matrix() {
 	delete[] this->mat.get();
+	delete this->mat;
 }
 
 // Dimensions
@@ -93,6 +94,20 @@ std::ostream& operator<<(std::ostream& os, const Matrix& mat){
 
 void Matrix::save_to_file(const std::string & filename) const {
 
+}
+
+Matrix& Matrix::transpose() const {
+	Matrix trans;
+	trans.n = this->m;
+	trans.m = this->n;
+
+	for (size_t i = 0; i < this->n; i++) {
+		for (size_t j = 0; j < this->m; j++) {
+			trans[j, i] = this[i, j];
+		}
+	}
+
+	return trans;
 }
 
 
