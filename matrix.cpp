@@ -1,6 +1,5 @@
 #include "matrix.h"
 
-
 //Matrix constructors
 
 Matrix::Matrix() {
