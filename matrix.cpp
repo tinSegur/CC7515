@@ -1,3 +1,4 @@
+
 #include "matrix.h"
 
 //Matrix constructors
@@ -29,6 +30,34 @@ Matrix::Matrix(const std::string& filename) {
 		exit(1);
 	}
 
+    std::string line;
+    std::vector<std::string> splitline = {};
+    std::getline(file, line);
+
+    int p = line.find(" ");
+
+    this->n = std::stoi(line.substr(0, p));
+    line.erase(line.begin(), line.begin()+ p + 1);
+
+    p = line.find("\n");
+    this->m = std::stoi(line.substr(0, p));
+
+    this->mat = std::unique_ptr<double>(new double[this->n*this->m]);
+
+    for (int i = 0; i < this->n; i++){
+        std::getline(file, line);
+
+        for (int j = 0; j < this->m; j++){
+            p = line.find(" ");
+            (*this)[i, j] = std::stod(line.substr(0, p));
+            line.erase(line.begin(), line.begin() + p + 1);
+        }
+
+    }
+
+
+
+
 
 	file.close();
 }
@@ -44,7 +73,6 @@ Matrix::Matrix(const Matrix& matrix) {
 
 Matrix::~Matrix() {
 	delete[] this->mat.get();
-	delete this->mat;
 }
 
 // Dimensions
@@ -93,21 +121,32 @@ std::ostream& operator<<(std::ostream& os, const Matrix& mat){
 }
 
 void Matrix::save_to_file(const std::string & filename) const {
+    std::ofstream out;
+    out.open(filename);
+
+    out << this->n << " " << this->m << "\n";
+
+    for (size_t i = 0; i < this->n; i++){
+        for (size_t j = 0; j < this->m; j++){
+            out << this[i, j] << " ";
+        }
+        out << "\n";
+    }
 
 }
 
-Matrix& Matrix::transpose() const {
-	Matrix trans;
-	trans.n = this->m;
-	trans.m = this->n;
+Matrix& Matrix::transpose() {
 
+    double buffer;
 	for (size_t i = 0; i < this->n; i++) {
-		for (size_t j = 0; j < this->m; j++) {
-			trans[j, i] = this[i, j];
+		for (size_t j = 0; j < i; j++) {
+			buffer = this->mat.get()[i*this->m + j];
+            this->mat.get()[i*this->m + j] = this->mat.get()[j*this->m + i];
+            this->mat.get()[j*this->m + i] = buffer;
 		}
 	}
 
-	return trans;
+	return *this;
 }
 
 

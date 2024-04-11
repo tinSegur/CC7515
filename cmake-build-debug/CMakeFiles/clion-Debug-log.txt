@@ -20,6 +20,6 @@ CMake Deprecation Warning:
 -- Check for working CXX compiler: /usr/bin/c++ - skipped
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- Configuring done (0.3s)
--- Generating done (0.0s)
+-- Configuring done (1.1s)
+-- Generating done (0.1s)
 -- Build files have been written to: /home/elvie/CLionProjects/CC7515/cmake-build-debug

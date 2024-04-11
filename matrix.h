@@ -6,6 +6,9 @@
 #include <fstream>
 #include <iostream>
 #include <exception>
+#include <string>
+#include <vector>
+#include <sstream>
 
 class Matrix {
 	private:
@@ -58,6 +61,7 @@ class Matrix {
 		double min() const; // Minimum value of the matrix
 		
 		// Utilitary functions
+
 		friend std::ostream& operator<< (std::ostream & os, const Matrix & mat); // Display matrix to console
 		void save_to_file(const std::string & filename) const; // Save matrix to a file, any format is valid
 			
@@ -99,7 +103,7 @@ class Matrix {
 
         }
 
-		Matrix &transpose() const; // Transpose the matrix
+		Matrix &transpose(); // Transpose the matrix
 		Matrix &operator*=(const Matrix & matrix) { // Multiplication
 
 
