@@ -8,3 +8,5 @@ include_directories(.)
 add_executable(Tarea_1
         matrix.cpp
         matrix.h)
+
+add_subdirectory(extern)

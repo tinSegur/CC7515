@@ -1,3 +1,0 @@
-/home/elvie/CLionProjects/CC7515/cmake-build-debug/CMakeFiles/Tarea_1.dir
-/home/elvie/CLionProjects/CC7515/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/elvie/CLionProjects/CC7515/cmake-build-debug/CMakeFiles/rebuild_cache.dir
