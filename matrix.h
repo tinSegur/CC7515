@@ -52,7 +52,7 @@ class Matrix {
 		}
 
 		// Dimensions
-		std::tuple<int, int>& size() const; // Returns a list of the size of the
+		std::tuple<int, int> size() const; // Returns a list of the size of the
 											// matrix, e.g.[2, 4], 2 rows, 4 columns
 		int length()
 			const; // Return max dimension, usefull for vectors, e.g.[2, 4] : > 4
@@ -105,14 +105,34 @@ class Matrix {
 
 		Matrix &transpose(); // Transpose the matrix
 		Matrix &operator*=(const Matrix & matrix) { // Multiplication
+            if (this->m != matrix.n){
+                throw new std::length_error("Matrix dims don't match up correctly");
+            }
 
+            std::unique_ptr<double> new_mat = std::unique_ptr<double>(new double[this->n*matrix.m]);
 
+            for (int i = 0; i < this->n; i++){
+                for (int j = 0; j < matrix.m; j++){
+                    for (int k = 0; k < this->m; k++) {
+                        new_mat.get()[i * this->m + j] = (*this)[i, k] * matrix[k, j];
+                    }
+                }
+            }
+
+            this->m = matrix.m;
+
+            delete[] this->mat.get();
+            this->mat.swap(new_mat);
+
+            return *this;
         }
 
 		Matrix &operator*=(double a){// Multiply by a constant
             for (int i = 0; i < this->n*this->m; i++){
                 this->mat.get()[i] *= a;
             }
+
+            return *this;
         }
 
 
@@ -120,6 +140,8 @@ class Matrix {
             for (int i = 0; i < this->n*this->m; i++){
                 this->mat.get()[i] += matrix.mat.get()[i];
             }
+
+            return *this;
         }
 
 
@@ -127,6 +149,8 @@ class Matrix {
             for (int i = 0; i < this->n*this->m; i++){
                 this->mat.get()[i] -= matrix.mat.get()[i];
             }
+
+            return *this;
         }
 
 };

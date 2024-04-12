@@ -76,7 +76,7 @@ Matrix::~Matrix() {
 }
 
 // Dimensions
-std::tuple<int, int>& Matrix::size() const {
+std::tuple<int, int> Matrix::size() const {
     std::tuple<int, int> ret = std::tuple<int, int>(this->n, this->m);
     return ret;
 }
@@ -128,7 +128,7 @@ void Matrix::save_to_file(const std::string & filename) const {
 
     for (size_t i = 0; i < this->n; i++){
         for (size_t j = 0; j < this->m; j++){
-            out << this[i, j] << " ";
+            out << (*this)[i, j] << " ";
         }
         out << "\n";
     }
