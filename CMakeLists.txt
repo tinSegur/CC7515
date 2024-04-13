@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.28)
-project(Tarea_1)
+project(Tarea1)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CPPLIB_SRC
-    "${PROJECT_SOURCE_DIR}/matrix.cpp"
-    "${PROJECT_SOURCE_DIR}/matrix.h"
+    ${PROJECT_SOURCE_DIR}/include/matrix.hpp
+    ${PROJECT_SOURCE_DIR}/include/matrix.cpp
 )
 
-add_library(${PROJECT_NAME} INTERFACE ${CPPLIB_SRC})
-target_include_directories(${PROJECT_NAME} INTERFACE ${PROJECT_SOURCE_DIR})
+add_library(${PROJECT_NAME} STATIC ${CPPLIB_SRC})
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 
 include(CTest)

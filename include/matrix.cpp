@@ -1,24 +1,24 @@
 
-#include "matrix.h"
+#include "matrix.hpp"
 
 //Matrix constructors
 
 Matrix::Matrix() {
-	this->n = 0;
-	this->m = 0;
-	this->mat = nullptr;
+	n = 0;
+	m = 0;
+	mat = nullptr;
 }
 
 Matrix::Matrix(int n) {
-	this->n = 1;
-	this->m = n;
-	this->mat = std::unique_ptr<double>(new double[n * m]);
+	n = 1;
+	m = n;
+	mat = std::make_unique<double[]>(n*m);
 }
 
 Matrix::Matrix(int n, int m) {
-	this->n = n;
-	this->m = m;
-	this->mat = std::unique_ptr<double>(new double[n * m]);
+	n = n;
+	m = m;
+	mat = std::make_unique<double[]>(n*m);
 }
 
 Matrix::Matrix(const std::string& filename) {
@@ -36,13 +36,13 @@ Matrix::Matrix(const std::string& filename) {
 
     int p = line.find(" ");
 
-    this->n = std::stoi(line.substr(0, p));
+    n = std::stoi(line.substr(0, p));
     line.erase(line.begin(), line.begin()+ p + 1);
 
     p = line.find("\n");
-    this->m = std::stoi(line.substr(0, p));
+    m = std::stoi(line.substr(0, p));
 
-    this->mat = std::unique_ptr<double>(new double[this->n*this->m]);
+    mat = std::make_unique<double[]>(n*m);
 
     for (int i = 0; i < this->n; i++){
         std::getline(file, line);
@@ -55,17 +55,13 @@ Matrix::Matrix(const std::string& filename) {
 
     }
 
-
-
-
-
 	file.close();
 }
 
 Matrix::Matrix(const Matrix& matrix) {
 	this->n = matrix.n;
 	this->m = matrix.m;
-	this->mat = std::unique_ptr<double>(new double[n * m]);
+	this->mat = std::make_unique<double[]>(n*m);
 	for (int i = 0; i < n * m; i++) {
 		this->mat.get()[i] = matrix.mat.get()[i];
 	}

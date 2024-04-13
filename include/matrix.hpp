@@ -12,9 +12,9 @@
 
 class Matrix {
 	private:
-		std::unique_ptr<double> mat; // Store the matrix
-			int n = 0; // Number of rows
-			int m = 0; // Number of columns
+		std::unique_ptr<double[]> mat; // Store the matrix
+        int n = 0; // Number of rows
+        int m = 0; // Number of columns
 	public:
 		//Constructors 
 		Matrix(); // Empty constructor
@@ -95,12 +95,13 @@ class Matrix {
             this->n = matrix.n;
             this->m = matrix.m;
 
-            this->mat = std::unique_ptr<double>(new double[this->n*this->m]);
+            this->mat = std::make_unique<double[]>(n*m);
 
             for (int i = 0; i < this->n*this->m; i++){
                 this->mat.get()[i] = matrix.mat.get()[i];
             }
 
+            return *this;
         }
 
 		Matrix &transpose(); // Transpose the matrix
@@ -109,7 +110,7 @@ class Matrix {
                 throw new std::length_error("Matrix dims don't match up correctly");
             }
 
-            std::unique_ptr<double> new_mat = std::unique_ptr<double>(new double[this->n*matrix.m]);
+            std::unique_ptr<double[]> new_mat = std::make_unique<double[]>(n*m);
 
             for (int i = 0; i < this->n; i++){
                 for (int j = 0; j < matrix.m; j++){
