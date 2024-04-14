@@ -4,20 +4,20 @@
 //Matrix constructors
 
 Matrix::Matrix() {
-	n = 0;
-	m = 0;
+	this->n = 0;
+	this->m = 0;
 	mat = nullptr;
 }
 
 Matrix::Matrix(int n) {
-	n = 1;
-	m = n;
+	this->n = 1;
+	this->m = n;
 	mat = std::make_unique<double[]>(n*m);
 }
 
 Matrix::Matrix(int n, int m) {
-	n = n;
-	m = m;
+	this->n = n;
+	this->m = m;
 	mat = std::make_unique<double[]>(n*m);
 }
 
@@ -68,7 +68,7 @@ Matrix::Matrix(const Matrix& matrix) {
 }
 
 Matrix::~Matrix() {
-	delete[] this->mat.get();
+	mat.reset();
 }
 
 // Dimensions
@@ -102,16 +102,20 @@ double Matrix::min() const {
 // Utility
 
 std::ostream& operator<<(std::ostream& os, const Matrix& mat){
-    os << "[";
+    os << "\n[\n\t";
 
     for (int i = 0; i < mat.n; i++){
         for (int j = 0; j < mat.m; j++){
             os << " " << mat.mat.get()[i*mat.m + j] << " ";
         }
-        os << "\n";
+
+    	if (i < (mat.n-1)) {
+    		os << "\n\t";
+    	}
+
     }
 
-    os << "]";
+    os << "\n]";
 
     return os;
 }
@@ -134,13 +138,21 @@ void Matrix::save_to_file(const std::string & filename) const {
 Matrix& Matrix::transpose() {
 
     double buffer;
-	for (size_t i = 0; i < this->n; i++) {
-		for (size_t j = 0; j < i; j++) {
-			buffer = this->mat.get()[i*this->m + j];
-            this->mat.get()[i*this->m + j] = this->mat.get()[j*this->m + i];
-            this->mat.get()[j*this->m + i] = buffer;
+
+	std::unique_ptr<double[]> nw = std::make_unique<double[]>(n*m);
+
+	for (size_t i = 0; i < n; i++) {
+		for (size_t j = 0; j < m; j++) {
+			nw[j*m + i] = mat.get()[i*n + j];
 		}
 	}
+
+	int b = n;
+	n = m;
+	m = b;
+
+	mat.swap(nw);
+	nw.release();
 
 	return *this;
 }

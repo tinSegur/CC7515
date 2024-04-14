@@ -95,6 +95,7 @@ class Matrix {
             this->n = matrix.n;
             this->m = matrix.m;
 
+			this->mat.release();
             this->mat = std::make_unique<double[]>(n*m);
 
             for (int i = 0; i < this->n*this->m; i++){
@@ -105,6 +106,7 @@ class Matrix {
         }
 
 		Matrix &transpose(); // Transpose the matrix
+
 		Matrix &operator*=(const Matrix & matrix) { // Multiplication
             if (this->m != matrix.n){
                 throw new std::length_error("Matrix dims don't match up correctly");
@@ -114,15 +116,15 @@ class Matrix {
 
             for (int i = 0; i < this->n; i++){
                 for (int j = 0; j < matrix.m; j++){
+                	new_mat.get()[i*this->m + j] = 0;
                     for (int k = 0; k < this->m; k++) {
-                        new_mat.get()[i * this->m + j] = (*this)[i, k] * matrix[k, j];
+                        new_mat.get()[i * this->m + j] += (*this)[i, k] * matrix[k, j];
                     }
                 }
             }
 
             this->m = matrix.m;
 
-            delete[] this->mat.get();
             this->mat.swap(new_mat);
 
             return *this;
