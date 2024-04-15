@@ -29,8 +29,8 @@ class Matrix {
 
 		// Setters and getters
 		double& operator[](std::size_t x, std::size_t y) { // Set value to(i, j) < row, column >
-			if (x>=n | y >= m) {
-				throw new std::range_error("Index out of bounds");
+			if ( x >= n | y >= m) {
+				throw std::range_error("Index out of bounds");
 			}
 
 			return mat.get()[x * m + y];
@@ -38,8 +38,8 @@ class Matrix {
 
 
 		double operator[](std::size_t x, std::size_t y) const { // Get value from(i, j) < row, column >
-			if (x>=n | y >= m) {
-				throw new std::range_error("Index out of bounds");
+			if (x >= this->n | y >= this->m) {
+				throw std::range_error("Index out of bounds");
 			}
 			return mat.get()[x * m + y];
 		}
@@ -109,7 +109,7 @@ class Matrix {
 
 		Matrix &operator*=(const Matrix & matrix) { // Multiplication
             if (this->m != matrix.n){
-                throw new std::length_error("Matrix dims don't match up correctly");
+                throw std::length_error("Matrix dims don't match up correctly");
             }
 
             std::unique_ptr<double[]> new_mat = std::make_unique<double[]>(n*m);
@@ -124,7 +124,6 @@ class Matrix {
             }
 
             this->m = matrix.m;
-
             this->mat.swap(new_mat);
 
             return *this;
@@ -140,6 +139,11 @@ class Matrix {
 
 
 		Matrix &operator+=(const Matrix & matrix){ // Add
+
+			if (this->size() != matrix.size()) {
+				throw std::logic_error("Matrix sizes must match");
+			}
+
             for (int i = 0; i < this->n*this->m; i++){
                 this->mat.get()[i] += matrix.mat.get()[i];
             }
@@ -149,7 +153,12 @@ class Matrix {
 
 
 		Matrix &operator-=(const Matrix & matrix) { // Substract
-            for (int i = 0; i < this->n*this->m; i++){
+
+			if (this->size() != matrix.size()) {
+				throw std::logic_error("Matrix sizes must match");
+			}
+
+			for (int i = 0; i < this->n*this->m; i++){
                 this->mat.get()[i] -= matrix.mat.get()[i];
             }
 

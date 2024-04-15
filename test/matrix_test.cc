@@ -6,7 +6,7 @@ typedef std::tuple<int, int> tup_int;
 
 class MatrixTest : public testing::Test {
 protected:
-    Matrix m1, m2, m3, m4;
+    Matrix m1, m2, m3, m4, m5, m6;
 
     void SetUp() override {
 
@@ -14,6 +14,8 @@ protected:
         m2 = Matrix(2);
         m3 = Matrix(2, 2);
         m4 = Matrix(m3);
+        m5 = Matrix(1, 6);
+        m6 = Matrix(5, 3);
 
 
         m2.fill(0.0);
@@ -40,6 +42,8 @@ TEST_F(MatrixTest, SettersGetters){
 
     EXPECT_EQ((m2[0,0]), 1.0) << "[] setter or fill fail";
 
+    EXPECT_THROW((m2[4, 0]), std::range_error) << "[] getter fails to throw exception";
+
 
 }
 
@@ -62,17 +66,30 @@ TEST_F(MatrixTest, MathOps) {
     m3[0,1] = 1.0;
     m3.transpose();
     m4[1,0] = 1.0;
-    EXPECT_EQ(m3, m4) << "Transpose method fail";
+    EXPECT_EQ(m3, m4) << "Square transpose method fail";
+
+    m2.fill(2.0);
+    m2.transpose();
+    EXPECT_EQ(m2.size(), (std::tuple<int, int>(2, 1))) << "Rectangular transpose operator fail";
 
     m4.fill(2.0);
     m3.fill(0.0);
     m3[0,0] = 1.0;
     m3[1,1] = 1.0;
 
-    Matrix m5 = Matrix(m4);
+    m5 = Matrix(m4);
     m5 *= m3;
 
+
     EXPECT_EQ(m5, m4) << "Multiply by matrix operation fail";
+
+    m3 *= m2;
+
+    Matrix t = Matrix(2);
+
+    t.fill(2.0);
+    t.transpose();
+    EXPECT_EQ(m3, t) << "Multiply vector by matrix operation fail";
 
     m5 *= 2.0;
     Matrix m6 = Matrix(2, 2);
@@ -84,8 +101,12 @@ TEST_F(MatrixTest, MathOps) {
     m6.fill(8.0);
     EXPECT_EQ(m5, m6) << "Add matrixes operation fail";
 
+    EXPECT_THROW((m5 += m2), std::logic_error) << "Invalid matrix add fail";
+
+
     m5 -= m6;
     m6.fill(0.0);
     EXPECT_EQ(m5, m6) << "Subtract matrixes operation fail";
+    EXPECT_THROW((m5 -= m2), std::logic_error) << "Invalid matrix subst fail";
 
 }
