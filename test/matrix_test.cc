@@ -110,3 +110,14 @@ TEST_F(MatrixTest, MathOps) {
     EXPECT_THROW((m5 -= m2), std::logic_error) << "Invalid matrix subst fail";
 
 }
+
+TEST_F(MatrixTest, FileIO){
+    m6.fill(10.0);
+    m6.save_to_file("testfile");
+
+    Matrix m7 = Matrix("testfile");
+
+    EXPECT_EQ(m6, m7);
+
+
+}
